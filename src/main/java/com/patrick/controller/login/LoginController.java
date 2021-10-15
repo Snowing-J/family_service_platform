@@ -2,7 +2,6 @@ package com.patrick.controller.login;
 
 import com.alibaba.fastjson.JSONObject;
 import com.patrick.bean.TblUserRecord;
-import com.patrick.bean.TblUserRole;
 import com.patrick.returnJson.Permission;
 import com.patrick.returnJson.Permissions;
 import com.patrick.returnJson.ReturnObject;

@@ -1,16 +1,16 @@
 package com.patrick.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.patrick.bean.FcBuilding;
-import com.patrick.bean.FcEstate;
-import com.patrick.bean.TblCompany;
+import com.patrick.bean.*;
 import com.patrick.returnJson.ReturnObject;
 import com.patrick.service.EstateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -62,6 +62,17 @@ public class EstateController {
         }else {
             return JSONObject.toJSONString(new ReturnObject("更新楼宇失败"));
         }
+    }
 
+    @RequestMapping("/estate/selectUnit")
+    public String selectUnit(@RequestBody UnitMessage[] unitMessages){
+        System.out.println("select Unit");
+        System.out.println(unitMessages[0]);
+        List<FcUnit> allUnit = new ArrayList<>();
+        for (UnitMessage unitMessage : unitMessages) {
+            allUnit.addAll(estateService.selectUnit(unitMessage));
+        }
+        System.out.println(allUnit.size());
+        return JSONObject.toJSONString(new ReturnObject(allUnit));
     }
 }

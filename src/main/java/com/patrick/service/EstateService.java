@@ -1,17 +1,17 @@
 package com.patrick.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.patrick.bean.FcBuilding;
-import com.patrick.bean.FcEstate;
-import com.patrick.bean.TblCompany;
+import com.patrick.bean.*;
 import com.patrick.mapper.FcBuildingMapper;
 import com.patrick.mapper.FcEstateMapper;
+import com.patrick.mapper.FcUnitMapper;
 import com.patrick.mapper.TblCompanyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.FileVisitor;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -25,6 +25,9 @@ public class EstateService {
 
     @Autowired
     private FcBuildingMapper fcBuildingMapper;
+
+    @Autowired
+    private FcUnitMapper fcUnitMapper;
 
     public List<TblCompany> selectConmpany(){
         List<TblCompany> companies = tblCompanyMapper.selectCompanyName();
@@ -77,5 +80,20 @@ public class EstateService {
     public Integer updateBuilding(FcBuilding fcBuilding){
         int result = fcBuildingMapper.updateById(fcBuilding);
         return result;
+    }
+
+    public List<FcUnit> selectUnit(UnitMessage unitMessage) {
+        //定义返回的集合
+        List<FcUnit> fcUnits = new ArrayList<>();
+        //操作插入数据
+        for (int i = 0; i < unitMessage.getUnitCount(); i++){
+            FcUnit fcUnit = new FcUnit();
+            fcUnit.setBuildingCode(unitMessage.getBuildingCode());
+            fcUnit.setUnitCode("U"+(i+1));
+            fcUnit.setUnitName("第"+(i+1)+"单元");
+            fcUnitMapper.insert(fcUnit);
+            fcUnits.add(fcUnit);
+        }
+        return fcUnits;
     }
 }
