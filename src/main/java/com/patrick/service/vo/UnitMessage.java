@@ -1,4 +1,4 @@
-package com.patrick.bean;
+package com.patrick.service.vo;
 
 public class UnitMessage {
 

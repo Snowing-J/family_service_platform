@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.patrick.bean.*;
 import com.patrick.returnJson.ReturnObject;
 import com.patrick.service.EstateService;
+import com.patrick.service.vo.CellMessage;
+import com.patrick.service.vo.UnitMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -66,7 +68,7 @@ public class EstateController {
 
     @RequestMapping("/estate/selectUnit")
     public String selectUnit(@RequestBody UnitMessage[] unitMessages){
-        System.out.println("select Unit");
+        System.out.println("select Unit-------------");
         System.out.println(unitMessages[0]);
         List<FcUnit> allUnit = new ArrayList<>();
         for (UnitMessage unitMessage : unitMessages) {
@@ -74,5 +76,23 @@ public class EstateController {
         }
         System.out.println(allUnit.size());
         return JSONObject.toJSONString(new ReturnObject(allUnit));
+    }
+
+    @RequestMapping("/estate/updateUnit")
+    public String updateUnit(FcUnit fcUnit){
+        System.out.println("updateFcUnit: " + fcUnit);
+        Integer result = estateService.updateUnit(fcUnit);
+        if (result == 1){
+            return JSONObject.toJSONString(new ReturnObject("更新单元成功！"));
+        } else {
+            return JSONObject.toJSONString(new ReturnObject("更新单元失败！"));
+        }
+    }
+
+    @RequestMapping("/estate/insertCell")
+    public String insertCell(@RequestBody CellMessage[] cellMessages){
+        System.out.println("insertCell: " + cellMessages[0]);
+        List<FcCell> fcCells = estateService.insertCell(cellMessages);
+        return JSONObject.toJSONString(new ReturnObject(fcCells));
     }
 }

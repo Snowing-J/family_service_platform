@@ -177,7 +177,6 @@ public class FcCell implements Serializable {
      */
     private String carSpaceId;
 
-
     public Integer getId() {
         return id;
     }

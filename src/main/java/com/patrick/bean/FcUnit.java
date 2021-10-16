@@ -62,6 +62,8 @@ public class FcUnit implements Serializable {
      */
     private String remark;
 
+    public FcUnit() {
+    }
 
     public Integer getId() {
         return id;
