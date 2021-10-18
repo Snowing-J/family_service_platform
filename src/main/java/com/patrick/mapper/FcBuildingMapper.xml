@@ -47,4 +47,7 @@
         id, estate_code, building_code, building_name, building_function, used_area, build_area, build_permission_id, sale_permission_id, finish_date, over_roof_date, decorate, struct_type, damage_grade, unit_count, building_type, clean_floor, mop_floor, channel_area, elevator, channel_door, evevator_door, water_well_door, electric_well_door, window_shades, hydrant, mirrors, unit_door, harden_ground_area, green_area, no_green_area, water_by_person, is_elevator, is_second_water_electric, random_identify, remark
     </sql>
 
+    <select id="selectByEstateCode" resultMap="BaseResultMap">
+        select * from fc_building where estate_code = #{estataCode}
+    </select>
 </mapper>

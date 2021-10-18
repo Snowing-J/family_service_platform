@@ -7,10 +7,7 @@ import com.patrick.service.EstateService;
 import com.patrick.service.vo.CellMessage;
 import com.patrick.service.vo.UnitMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,15 +20,15 @@ public class EstateController {
     private EstateService estateService;
 
     @RequestMapping("/estate/selectCompany")
-    public String selectEstate(){
-        System.out.println("selectCompany");
+    public String selectCompany(){
+        System.out.println("---selectCompany");
         List<TblCompany> tblCompanies = estateService.selectConmpany();
         return JSONObject.toJSONString(new ReturnObject(tblCompanies));
     }
 
     @RequestMapping("/estate/insertEstate")
     public String insertEstate(FcEstate fcEstate){
-        System.out.println("需要插入的数据如下： " + fcEstate);
+        System.out.println("---insertEstate： " + fcEstate);
 
         Integer result = estateService.insertEstate(fcEstate);
         if(result == 0){
@@ -41,6 +38,13 @@ public class EstateController {
         }
     }
 
+    @RequestMapping("/estate/selectEstate")
+    public String selectEstate(@RequestBody String estateCode){
+        System.out.println("---select estate: " + estateCode);
+        List<FcBuilding> fcBuildings = estateService.selectEstate(estateCode);
+        return JSONObject.toJSONString(new ReturnObject(fcBuildings));
+    }
+
     /**
      * 此处应该完成的是楼宇的查询功能，但是现在数据表中没有任何楼宇的数据，
      * 因此在编写的时候，需要进行插入且返回插入的数据
@@ -48,11 +52,18 @@ public class EstateController {
      * @param estateCode
      * @return
      */
-    @RequestMapping("/estate/selectBuilding")
-    public String selectBuilding(Integer buildingNumber, String estateCode){
-        List<FcBuilding> fcBuildings = estateService.selectBuilding(buildingNumber, estateCode);
-        System.out.println("fcBuildings: " + fcBuildings);
-        return JSONObject.toJSONString(new ReturnObject(fcBuildings));
+    @RequestMapping("/estate/insertBuilding")
+    public String insertBuilding(Integer buildingNumber, String estateCode){
+        System.out.println("insert buildingNumber: " + buildingNumber);
+        Integer result = estateService.insertBuilding(buildingNumber, estateCode);
+        return JSONObject.toJSONString(new ReturnObject(result));
+    }
+
+    @RequestMapping(value = "/estate/selectBuilding")
+    public String selectBuilding(@RequestParam(value = "buildingCode") String buildingCode){
+        System.out.println("---select building, buildingCode: " + buildingCode);
+        List<FcUnit> fcUnits = estateService.selectBuilding(buildingCode);
+        return JSONObject.toJSONString(new ReturnObject(fcUnits));
     }
 
     @RequestMapping("/estate/updateBuilding")
@@ -66,16 +77,31 @@ public class EstateController {
         }
     }
 
+    @RequestMapping("/estate/insertUnit")
+    public String insertUnit(@RequestBody UnitMessage[] unitMessages){
+        System.out.println("---insert Unit-------------");
+        System.out.println(unitMessages[0]);
+        Integer result = 0;
+        for (UnitMessage unitMessage : unitMessages) {
+             result = estateService.insertUnit(unitMessage);
+        }
+        if (result == 1){
+            return JSONObject.toJSONString(new ReturnObject("插入单元信息成功！"));
+        }else {
+            return JSONObject.toJSONString(new ReturnObject("插入单元信息失败！"));
+        }
+    }
+
     @RequestMapping("/estate/selectUnit")
     public String selectUnit(@RequestBody UnitMessage[] unitMessages){
-        System.out.println("select Unit-------------");
+        System.out.println("---select Unit-------------");
         System.out.println(unitMessages[0]);
-        List<FcUnit> allUnit = new ArrayList<>();
+        List<FcCell> allCell = new ArrayList<>();
         for (UnitMessage unitMessage : unitMessages) {
-            allUnit.addAll(estateService.selectUnit(unitMessage));
+            allCell.addAll(estateService.selectUnit(unitMessage));
         }
-        System.out.println(allUnit.size());
-        return JSONObject.toJSONString(new ReturnObject(allUnit));
+        System.out.println(allCell.size());
+        return JSONObject.toJSONString(new ReturnObject(allCell));
     }
 
     @RequestMapping("/estate/updateUnit")

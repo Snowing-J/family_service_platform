@@ -2,7 +2,10 @@ package com.patrick.mapper;
 
 import com.patrick.bean.FcBuilding;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +17,5 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public interface FcBuildingMapper extends BaseMapper<FcBuilding> {
-
+    public List<FcBuilding> selectByEstateCode(@Param("estateCode") String estateCode);
 }
